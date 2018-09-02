@@ -1,0 +1,28 @@
+# NOTE: This uses just prove of concept images. Do not use in production!
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  labels:
+    app: nfspv-data
+  name: nfspv-data
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 20Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: data
+    namespace: opencast
+  mountOptions:
+  - hard
+  - nfsvers=4.1
+  nfs:
+    path: /
+    server: 10.59.251.38
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: slow

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app: opencast-data
+  name: data
+  namespace: opencast
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  selector:
+    matchLabels:
+      app: nfspv-data
+  storageClassName: slow
+  volumeName: nfspv-data
