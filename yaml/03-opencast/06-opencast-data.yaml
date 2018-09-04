@@ -12,9 +12,9 @@ spec:
   - ReadWriteMany
   resources:
     requests:
-      storage: 20Gi
+      storage: 50Gi
   selector:
     matchLabels:
-      app: nfspv-data
+      app: nfspv
   storageClassName: slow
-  volumeName: nfspv-data
+  volumeName: nfspv

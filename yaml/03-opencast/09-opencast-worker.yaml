@@ -1,29 +1,10 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: opencast-admin
-  namespace: opencast
-  labels:
-    edu.my.srv: opencast-admin
-  annotations:
-    cloud.google.com/load-balancer-type: "Internal"
-spec:
-  type: LoadBalancer
-  selector:
-    edu.my.srv: opencast-admin
-  ports:
-    - port: 80
-      targetPort: 8080
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: opencast-admin
+  name: opencast-worker
   namespace: opencast
   labels:
-    edu.my.srv: opencast-admin
+    edu.my.srv: opencast-worker
 spec:
   replicas: 1
   minReadySeconds: 60
@@ -31,11 +12,11 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      edu.my.srv: opencast-admin
+      edu.my.srv: opencast-worker
   template:
     metadata:
       labels:
-        edu.my.srv: opencast-admin
+        edu.my.srv: opencast-worker
     spec:
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
@@ -47,18 +28,15 @@ spec:
             - name: data
               mountPath: /data
       containers:
-        - name: opencast-admin
-          #          image: quay.io/opencast/admin:5.0
-          image: sysbind/opencast:admin-5.0
-          ports:
-            - containerPort: 8080
+        - name: opencast-worker
+          image: quay.io/opencast/worker:5.0
           env:
             - name: ORG_OPENCASTPROJECT_DB_VENDOR
               value: "MySQL"
             - name: JAVA_MIN_MEM
               value: "512M"
             - name: JAVA_MAX_MEM
-              value: "5G"
+              value: "7G"
           volumeMounts:
             - name: opencast-config
               mountPath: /etc/opencast
@@ -66,24 +44,17 @@ spec:
               mountPath: /data
           resources:
             requests:
-              memory: "2Gi"
+              memory: "1Gi"
               cpu: "1"
             limits:
-              memory: "5Gi"
-              cpu: "3"
-          readinessProbe:
-            initialDelaySeconds: 60
-            periodSeconds: 120
-            httpGet:
-              path: /info/me.json
-              port: 8080
-              scheme: HTTP
+              memory: "7Gi"
+              cpu: "4"
       volumes:
         - name: opencast-config
           configMap:
             name: opencast-config
             items:
-              - key: custom.properties-admin
+              - key: custom.properties-worker
                 path: custom.properties
               - key: mh_default_org.cfg
                 path: org.opencastproject.organization-mh_default_org.cfg
