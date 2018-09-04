@@ -6,7 +6,7 @@ metadata:
   labels:
     edu.my.srv: opencast-worker
 spec:
-  replicas: 2
+  replicas: 1
   minReadySeconds: 60
   strategy:
     type: Recreate
@@ -29,7 +29,7 @@ spec:
               mountPath: /data
       containers:
         - name: opencast-worker
-          image: opencast/worker:4.1
+          image: quay.io/opencast/worker:5.0
           env:
             - name: ORG_OPENCASTPROJECT_DB_VENDOR
               value: "MySQL"
@@ -44,8 +44,8 @@ spec:
               mountPath: /data
           resources:
             requests:
-              memory: "5Gi"
-              cpu: "2.5"
+              memory: "2Gi"
+              cpu: "1"
             limits:
               memory: "7Gi"
               cpu: "4"

@@ -48,7 +48,7 @@ spec:
               mountPath: /data
       containers:
         - name: opencast-presentation
-          image: opencast/presentation:4.1
+          image: quay.io/opencast/presentation:5.0
           ports:
             - containerPort: 8080
           env:
@@ -65,8 +65,8 @@ spec:
               mountPath: /data
           resources:
             requests:
-              memory: "4Gi"
-              cpu: "2"
+              memory: "2Gi"
+              cpu: "1"
             limits:
               memory: "5Gi"
               cpu: "3"

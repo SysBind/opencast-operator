@@ -1,3 +1,4 @@
+
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -8,13 +9,13 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: k8s-oc
 spec:
   rules:
-    - host: oc-admin.k8s.mtneug.de
+    - host: oc-admin.sysbind.biz
       http:
         paths:
           - backend:
               serviceName: opencast-admin
               servicePort: 80
-    - host: oc.k8s.mtneug.de
+    - host: oc.sysbind.biz
       http:
         paths:
           - backend:

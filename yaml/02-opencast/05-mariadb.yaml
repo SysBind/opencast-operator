@@ -62,7 +62,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: mariadb
-          image: mariadb:10.0
+          image: mariadb:10
           ports:
             - containerPort: 3306
               protocol: TCP
